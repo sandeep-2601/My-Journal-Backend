@@ -1,24 +1,18 @@
 const express = require('express');
 const connectToMongo = require('./db');
-
-const port  = 3000;
+const cors = require('cors')
+const port = 5000;
 const app = express();
 
 connectToMongo();
 
 app.use(express.json());
+app.use(cors());
 
-app.get('/',(req,res)=>{
-    res.send("Hello welcome here");
-});
+//backend api routes
+app.use('/api/user', require('./routes/AuthRoute'));
+app.use('/api/note', require('./routes/NoteRoute'));
 
-app.use('/api/user',require('./routes/auth'));
-
-app.get('/:id',(req,res)=>{
-    const id = req.params.id;
-    res.send(`Hello welcome here ${id}`);
-});
-
-app.listen(port,()=>{
+app.listen(port, () => {
     console.log(`listen to port ${port}`);
-});
+        });
